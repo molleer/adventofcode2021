@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "ts-node": "^10.4.0",
+    "tsc": "^2.0.3"
+  },
+  "scripts": {
+    "start": "ts-node"
+  },
+  "devDependencies": {
+    "@types/node": "^16.11.11",
+    "ts-node-dev": "^1.1.8"
+  }
+}
