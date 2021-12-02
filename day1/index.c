@@ -1,15 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int strToI(char* str) {
-    int ans = str[0] - 48;
-    for(int i = 1; str[i]; i++) {
-        ans *= 10;
-        ans += str[i] - 48;
-    }
-    return ans;
-}
-
 int main() {
     FILE* fp = fopen("./input.txt", "r");
     char line[20];
@@ -17,7 +8,7 @@ int main() {
 
     for(int i = 0; i < 2000; i++) {
         fgets(line, 20, fp);
-        nums[i] = strToI(line);
+        nums[i] = atoi(line);
     }
     fclose(fp);
 
