@@ -7,7 +7,6 @@
     "start": "ts-node"
   },
   "devDependencies": {
-    "@types/node": "^16.11.11",
-    "ts-node-dev": "^1.1.8"
+    "@types/node": "^16.11.11"
   }
 }
