@@ -16,14 +16,6 @@ silver <- function(input) {
 
 sort_string <- function(str) {paste(sort(str_split(str, "")[[1]]), collapse = "")}
 sort_letters <- function(arr) {paste(sort(arr), collapse = "")}
-contains <- function(this, that) {
-  for(i in that) {
-    if(!any(this == i)) {
-      return(F)
-    }
-  }
-  return(T)
-}
 subtr <- function(this, that) {
   res <- c()
   for(i in this) {
@@ -34,11 +26,17 @@ subtr <- function(this, that) {
   return(res)
 }
 map <- function(arr, f) {
-  for(i in 1:length(arr)) {
-    arr[i] <- f(arr[i])
+  ans <- c()
+  for(i in arr) {
+    ans <- c(ans, f(i))
   }
-  return(arr)
+  return(ans)
 }
+contains <- function(this, that) {
+  # if this contains that
+  all(map(that, function(e) {any(this == e)}))
+}
+
 
 # 1 seg -> 
 # 2 seg -> 1
@@ -81,7 +79,7 @@ get_order <- function(line) {
         digits[3] <- list(i)
       }
     } else if(len == 6) {
-      if(!contains(i, digits[2])) {
+      if(!any(contains(i, digits[[2]]))) {
         digits[7] <- list(i)
       } else if(contains(i, bdSeg)) {
         digits[10] <- list(i)
@@ -92,18 +90,19 @@ get_order <- function(line) {
   }
   return(map(digits, sort_letters))
 }
-get_order(str_split("acedgfb cdfbe gcdfa fbcad dab cefabd cdfgeb eafb cagedb ab", " ")[[1]])
 
-gold <- function() {
-  
+gold <- function(input) {
   sum <- 0
   for(i in 1:length(input[,1])) {
     num <- 0
     digits <- get_order(input[i, 1:10])
     for(k in 12:15) {
-      num <- 10^(16-i) * (which(digits == sort_letters(input[i, k])) - 1)
+      num <- num + 10^(15-k) * (which(digits == sort_string(input[i, k])) - 1)
     }
+    sum <- sum + num
     print(num)
   }
   return(sum)
 }
+# get_order(str_split("afg daecgf aefbgdc fbge fg dabfg efabgd cbadge abcfd gbaed", " ")[[1]])
+gold(input)
