@@ -18,7 +18,7 @@ sort_string <- function(str) {paste(sort(str_split(str, "")[[1]]), collapse = ""
 sort_letters <- function(arr) {paste(sort(arr), collapse = "")}
 contains <- function(this, that) {
   for(i in that) {
-    if(any(this[[1]] == i)) {
+    if(!any(this == i)) {
       return(F)
     }
   }
