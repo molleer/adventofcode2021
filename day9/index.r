@@ -18,13 +18,65 @@ check_neighbours <- function(x, y, input) {
   return(ans)
 }
 
-risk <- 0
-for(y in 1:length(input)) {
-  for(x in 1:length(input[[y]])) {
-    if(check_neighbours(x,y,input) <= 1) {
-      risk <- risk + input[[y]][x] + 1
+silver <- function(input) {
+  risk <- 0
+  for(y in 1:length(input)) {
+    for(x in 1:length(input[[y]])) {
+      if(check_neighbours(x,y,input) <= 1) {
+        risk <- risk + input[[y]][x] + 1
+      }
+    }
+  }
+  return(risk)
+}
+
+new_input <- matrix(T, 100, 100)
+for(row in 1:100) {
+  new_input[row,] <- input[[row]] != 9
+}
+
+
+search_area <- matrix(F, 100, 100)
+basin_size <- function(row, col, input, searched) {
+  size <- 0
+  if(row < 100 && input[row + 1, col] && !searched[row + 1, col]) {
+    searched[row + 1, col] <- T
+    ans <- basin_size(row + 1, col, input, searched)
+    size <- 1 + ans[[1]]
+    searched <- ans[[2]]
+  }
+  if(row > 1 && input[row - 1, col] && !searched[row - 1, col]) {
+    searched[row - 1, col] <- T
+    ans <- basin_size(row - 1, col, input, searched)
+    size <- size + 1 + ans[[1]]
+    searched <- ans[[2]]
+  }
+  if(col < 100 && input[row, col + 1] && !searched[row, col + 1]) {
+    searched[row, col + 1] <- T
+    ans <- basin_size(row, col + 1, input, searched)
+    size <- size + 1 + ans[[1]]
+    searched <- ans[[2]]
+  }
+  if(col > 1 && input[row, col - 1] && !searched[row, col - 1]) {
+    searched[row, col - 1] <- T
+    ans <- basin_size(row, col - 1, input, searched)
+    size <- size + 1 + ans[[1]]
+    searched <- ans[[2]]
+  }
+  return(list(size, searched))
+}
+
+sizes <- c()
+for(row in 1:100) {
+  for(col in 1:100) {
+    if(new_input[row, col] && !search_area[row, col]){
+      search_area[row, col] <- T
+      ans <- basin_size(row, col, new_input, search_area)
+      search_area <- ans[[2]]
+      sizes <- c(sizes, ans[[1]] + 1) 
     }
   }
 }
-risk
-# map(input, function(e) {str_split(e, "")})
+
+sizes <- sort(sizes, decreasing = T)
+sizes[1]*sizes[2]*sizes[3]
