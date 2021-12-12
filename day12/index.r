@@ -1,5 +1,5 @@
 library("stringr")
-input <- read.csv("./day12/input1.txt", sep = "-", header = F)
+input <- read.csv("./day12/input.txt", sep = "-", header = F)
 nodes <- unique(c(input[,1], input[,2]))
 large_caves <- str_count(nodes, "[A-Z]+")
 connections <- matrix(0, length(nodes), length(nodes))
